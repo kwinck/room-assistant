@@ -63,12 +63,16 @@ BLEScanner.prototype._handlePacket = function (peripheral) {
                 id = peripheral.id;
             }
 
-            var payload = {
-                id: id,
-                name: advertisement.localName,
-                rssi: peripheral.rssi,
-                distance: filteredDistance
-            };
+    //        var payload = {
+    //            id: id,
+    //            name: advertisement.localName,
+    //            rssi: peripheral.rssi,
+    //            distance: filteredDistance
+    //        };
+              var payload = 'HH';
+    //         'topic': '/location/knud_nut_d',
+    //         'payload': 'HH' 
+	//	};
 
             this.callback(channel, payload);
         }
