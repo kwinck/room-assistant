@@ -46,14 +46,15 @@ BLEScanner.prototype._handlePacket = function (peripheral) {
         lastUpdateTime = currTime;
     }
 if ((currTime - lastsenttime) > parseInt(60000)&& lastsentcount == 1) {
-var payload = { 'location': 'away',                                                                                                                                                                    
+/*var payload = { 'location': 'away',                                                                                                                                                                    
                 'time': lastUpdateTime,                                                                                                                                                              
                 'sendcount': sendcount,                                                                                                                                                              
                 'loopcount': loopcount,                                                                                                                                                              
                 'lastsentcount': lastsentcount,                                                                                                                                                      
                 'lastsenttime': lastsenttime ,
 		'diff': (currTime - lastsenttime)                                                                                                                                                        
-};
+};*/
+var location='away';
 lastsentcount=0;
 this.callback(channel, payload);
 }                                                                                                                                                                                                   
@@ -95,6 +96,7 @@ loopcount++;
 sendcount++;
 lastsentcount=1;
 lastsenttime= new Date();
+/*
 var payload = { 'location': 'HH',
 		'time': lastUpdateTime,
 		'sendcount': sendcount,
@@ -104,6 +106,8 @@ var payload = { 'location': 'HH',
 		'diff': (currTime - lastsenttime),
 		'currTime': currTime
 };
+*/
+var payload = config.get('ble.location'); 
             this.callback(channel, payload);
         }
     }

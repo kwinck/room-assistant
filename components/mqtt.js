@@ -16,8 +16,8 @@ function MQTTPublisher() {
 MQTTPublisher.prototype.publish = function (channel, payload, options) {
     var topic = channel + '/' + config.get('mqtt.topic');
 
-    this.client.publish(topic, JSON.stringify(payload), options);
-    //this.client.publish(topic, (payload), options);
+    //this.client.publish(topic, JSON.stringify(payload), options);
+    this.client.publish(topic, (payload), options);
 };
 
 module.exports = MQTTPublisher;
