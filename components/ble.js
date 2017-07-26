@@ -1,7 +1,11 @@
 var config = require('config');
 var noble = require('noble');
 var console = process.console;
-
+var loopcount = 0;
+var sendcount = 0;
+var lastsentcount=0;
+var senttime;
+var lastsenttime = new Date();
 var KalmanFilter = require('kalmanjs').default;
 
 var channel = config.get('ble.channel');
@@ -36,13 +40,28 @@ BLEScanner.prototype._handlePacket = function (peripheral) {
     if (updateFreq > 0) {
         var currTime = new Date();
         if ((currTime - lastUpdateTime) < updateFreq) {
+	loopcount++;
             return;
         }
         lastUpdateTime = currTime;
     }
+if ((currTime - lastsenttime) > parseInt(60000)&& lastsentcount == 1) {
+var payload = { 'location': 'away',                                                                                                                                                                    
+                'time': lastUpdateTime,                                                                                                                                                              
+                'sendcount': sendcount,                                                                                                                                                              
+                'loopcount': loopcount,                                                                                                                                                              
+                'lastsentcount': lastsentcount,                                                                                                                                                      
+                'lastsenttime': lastsenttime ,
+		'diff': (currTime - lastsenttime)                                                                                                                                                        
+};
+lastsentcount=0;
+this.callback(channel, payload);
+}                                                                                                                                                                                                   
+
+
 
     var advertisement = peripheral.advertisement;
-
+loopcount++;
     // check if we have a whitelist
     // and if we do, if this id is listed there
     var whitelist = config.get('ble.whitelist') || [];
@@ -69,11 +88,22 @@ BLEScanner.prototype._handlePacket = function (peripheral) {
     //            rssi: peripheral.rssi,
     //            distance: filteredDistance
     //        };
-              var payload = 'HH';
+    //          var payload = 'HH';
     //         'topic': '/location/knud_nut_d',
     //         'payload': 'HH' 
 	//	};
-
+sendcount++;
+lastsentcount=1;
+lastsenttime= new Date();
+var payload = { 'location': 'HH',
+		'time': lastUpdateTime,
+		'sendcount': sendcount,
+		'loopcount': loopcount,
+		'lastsentcount': lastsentcount,
+		'lastsenttime': lastsenttime ,
+		'diff': (currTime - lastsenttime),
+		'currTime': currTime
+};
             this.callback(channel, payload);
         }
     }
