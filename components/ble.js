@@ -54,7 +54,7 @@ if ((currTime - lastsenttime) > parseInt(60000)&& lastsentcount == 1) {
                 'lastsenttime': lastsenttime ,
 		'diff': (currTime - lastsenttime)                                                                                                                                                        
 };*/
-var location='away';
+var payload='away';
 lastsentcount=0;
 this.callback(channel, payload);
 }                                                                                                                                                                                                   
